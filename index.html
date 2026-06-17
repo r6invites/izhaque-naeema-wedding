@@ -763,8 +763,9 @@ window.addEventListener('load', () => {
     // pointerdown handles both touchstart (mobile) and mousedown (desktop)
     loader.addEventListener('pointerdown', (e) => {
       if (isUnlocked) return;
-      // TRIGGER AUDIO HERE - The moment they touch the screen
-  document.getElementById('bg-music').play().catch(err => console.log("Audio block:", err));
+      // NEW: Trigger audio here to catch the "User Gesture" on iPhone
+      const bgMusic = document.getElementById('bg-music');
+      bgMusic.play().catch(err => console.log("Audio play blocked by browser:", err));
       isDragging = true;
       startX = e.clientX;
       currentX = startX;
@@ -816,8 +817,6 @@ window.addEventListener('load', () => {
       if (deltaX < -75) {
         isUnlocked = true;
         
-        // Play the music! (The catch handles any strict browser restrictions gracefully)
-        document.getElementById('bg-music').play().catch(err => console.log("Audio blocked by browser:", err));
 
         let velocity = Math.abs(deltaX) / (deltaTime || 1);
         let spinDuration = Math.max(0.4, Math.min(2.0, 1.5 / velocity));
@@ -830,7 +829,7 @@ window.addEventListener('load', () => {
           opacity: 0, 
           duration: 1, 
           ease: 'power2.inOut', 
-          delay: spinDuration * 0.4,
+          delay: spinDuration * 0.6,
           onComplete: () => {
             loader.style.display = 'none';
             document.body.style.overflowY = 'auto';
