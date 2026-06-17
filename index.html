@@ -763,9 +763,7 @@ window.addEventListener('load', () => {
     // pointerdown handles both touchstart (mobile) and mousedown (desktop)
     loader.addEventListener('pointerdown', (e) => {
       if (isUnlocked) return;
-      // NEW: Trigger audio here to catch the "User Gesture" on iPhone
-      const bgMusic = document.getElementById('bg-music');
-      bgMusic.play().catch(err => console.log("Audio play blocked by browser:", err));
+      
       isDragging = true;
       startX = e.clientX;
       currentX = startX;
