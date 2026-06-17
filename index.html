@@ -764,6 +764,10 @@ window.addEventListener('load', () => {
     loader.addEventListener('pointerdown', (e) => {
       if (isUnlocked) return;
       
+      // THE CRITICAL FIX: Trigger play at the exact moment of touch
+  const bgMusic = document.getElementById('bg-music');
+  bgMusic.play().catch(err => console.log("Gesture pending:", err));
+
       isDragging = true;
       startX = e.clientX;
       currentX = startX;
@@ -815,9 +819,9 @@ window.addEventListener('load', () => {
       if (deltaX < -75) {
         isUnlocked = true;
         
-        // 1. Force explicit play at the moment of release
+        // Final unlock trigger
     const bgMusic = document.getElementById('bg-music');
-    bgMusic.play().catch(err => console.log("Play failed:", err));
+    bgMusic.play();
 
 
       
@@ -838,8 +842,8 @@ window.addEventListener('load', () => {
             document.body.style.overflowY = 'auto';
             document.body.style.height = 'auto';
             
-            // 3. Final resume to ensure mobile browsers didn't pause it during the fade
-        bgMusic.play().catch(err => console.log("Final play attempt failed:", err));
+           // Re-trigger play once the loader is gone for total reliability
+        bgMusic.play();
 
             initHeroAnims();
             initCountdown();
