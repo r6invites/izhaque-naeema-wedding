@@ -817,7 +817,12 @@ window.addEventListener('load', () => {
       if (deltaX < -75) {
         isUnlocked = true;
         
+        // 1. Force explicit play at the moment of release
+    const bgMusic = document.getElementById('bg-music');
+    bgMusic.play().catch(err => console.log("Play failed:", err));
 
+
+      
         let velocity = Math.abs(deltaX) / (deltaTime || 1);
         let spinDuration = Math.max(0.4, Math.min(2.0, 1.5 / velocity));
 
@@ -834,6 +839,9 @@ window.addEventListener('load', () => {
             loader.style.display = 'none';
             document.body.style.overflowY = 'auto';
             document.body.style.height = 'auto';
+            
+            // 3. Final resume to ensure mobile browsers didn't pause it during the fade
+        bgMusic.play().catch(err => console.log("Final play attempt failed:", err));
 
             initHeroAnims();
             initCountdown();
