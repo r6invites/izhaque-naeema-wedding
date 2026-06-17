@@ -764,9 +764,8 @@ window.addEventListener('load', () => {
     loader.addEventListener('pointerdown', (e) => {
       if (isUnlocked) return;
       
-      // THE CRITICAL FIX: Trigger play at the exact moment of touch
-  const bgMusic = document.getElementById('bg-music');
-  bgMusic.play().catch(err => console.log("Gesture pending:", err));
+      // Just prepare the audio (load it), don't play it yet
+  document.getElementById('bg-music').load();
 
       isDragging = true;
       startX = e.clientX;
@@ -822,9 +821,9 @@ window.addEventListener('load', () => {
         let velocity = Math.abs(deltaX) / (deltaTime || 1);
         let spinDuration = Math.max(0.4, Math.min(2.0, 1.5 / velocity));
 
-        requestAnimationFrame(() => {
-      const bgMusic = document.getElementById('bg-music');
-      bgMusic.play().catch(err => console.log("Audio play deferred:", err));
+        // 2. Play the music on the NEXT frame so the spin starts perfectly smooth
+    requestAnimationFrame(() => {
+        document.getElementById('bg-music').play().catch(e => console.log(e));
     });
 
         // Spin it rapidly
