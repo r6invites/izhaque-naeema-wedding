@@ -818,15 +818,14 @@ window.addEventListener('load', () => {
 // If swiped far enough left (more than 75px)
       if (deltaX < -75) {
         isUnlocked = true;
-        
-        // Final unlock trigger
-    const bgMusic = document.getElementById('bg-music');
-    bgMusic.play();
-
-
       
         let velocity = Math.abs(deltaX) / (deltaTime || 1);
         let spinDuration = Math.max(0.4, Math.min(2.0, 1.5 / velocity));
+
+        requestAnimationFrame(() => {
+      const bgMusic = document.getElementById('bg-music');
+      bgMusic.play().catch(err => console.log("Audio play deferred:", err));
+    });
 
         // Spin it rapidly
         gsap.to(logo, { rotationY: "-=1080", duration: spinDuration, ease: "power2.out" });
