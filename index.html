@@ -763,6 +763,8 @@ window.addEventListener('load', () => {
     // pointerdown handles both touchstart (mobile) and mousedown (desktop)
     loader.addEventListener('pointerdown', (e) => {
       if (isUnlocked) return;
+      // TRIGGER AUDIO HERE - The moment they touch the screen
+  document.getElementById('bg-music').play().catch(err => console.log("Audio block:", err));
       isDragging = true;
       startX = e.clientX;
       currentX = startX;
